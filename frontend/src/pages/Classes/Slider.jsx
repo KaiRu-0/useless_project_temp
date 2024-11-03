@@ -1,6 +1,8 @@
+// App.js
 import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
+  ContactShadows,
   Html,
   PerspectiveCamera,
   shaderMaterial,
@@ -19,7 +21,6 @@ import {
 } from "@react-three/postprocessing";
 import { Text } from "@react-three/drei";
 import Floor from "./Reflector";
-import { useCourseStore } from "../../hooks/courseStore";
 
 function ScrollPlane({ positionX, margin }) {
   const meshRef = useRef();
@@ -38,18 +39,27 @@ function ScrollPlane({ positionX, margin }) {
     const handleScroll = (e) => {
       setTargetScroll((prev) => prev + e.deltaY);
     };
+
+    const handleTouchMove = (e) => {
+      setTargetScroll((prev) => prev + e.touches[0].clientY);
+    };
+
     window.addEventListener("wheel", handleScroll);
-    return () => window.removeEventListener("wheel", handleScroll);
+    window.addEventListener("touchmove", handleTouchMove);
+
+    return () => {
+      window.removeEventListener("wheel", handleScroll);
+      window.removeEventListener("touchmove", handleTouchMove);
+    };
   }, []);
 
   useFrame((rootState) => {
     setCurrentScroll((prev) => lerp(prev, targetScroll, scrollSpeed));
 
     const scrollDirection = targetScroll > currentScroll ? 1 : -1;
-    if (materialRef.current) {
-      materialRef.current.uniforms.direction.value = scrollDirection;
-    }
+    materialRef.current.uniforms.direction.value = scrollDirection;
 
+    
     const wholeHeight = 6 * margin;
 
     const positionXValue =
@@ -59,28 +69,25 @@ function ScrollPlane({ positionX, margin }) {
 
     setScrollPosition(positionXValue);
 
-    if (meshRef.current) {
-      meshRef.current.position.x = positionXValue;
-    }
+    meshRef.current.position.x = positionXValue;
+    textRef.current.position.x = positionXValue;
 
-    if (textRef.current) {
-      textRef.current.position.x = positionXValue;
-    }
-
-    if (materialRef.current) {
-      materialRef.current.uniforms.time.value += 0.01;
-      materialRef.current.uniforms.uResolution.value.set(
-        size.width,
-        size.height
-      );
-    }
+    materialRef.current.uniforms.time.value += 0.01;
+    materialRef.current.uniforms.uResolution.value.set(size.width, size.height);
   });
 
   function lerp(start, end, t) {
     return start * (1 - t) + end * t;
   }
 
-  const { course } = useCourseStore();
+  let texts = [
+    "CST205 OOPS",
+    "SUSTAINABLE ENGINEERING",
+    "DAE",
+    "LOGIC SYSTEM DESIGN",
+    "MAT 203- DMS",
+    "EST 120 BME",
+  ];
 
   const images = useTexture([
     "1.jpeg",
@@ -91,80 +98,72 @@ function ScrollPlane({ positionX, margin }) {
     "6.jpeg",
   ]);
 
-  useEffect(() => {
-    console.log(course);
-  }, [course]);
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   return (
     <>
-      {Array.isArray(course) && course.length > 0 ? (
-        course.map((item, index) => (
-          <React.Fragment key={index}>
-            <Text
-              ref={textRef}
-              fontSize={0.07}
-              font="/noh.ttf"
-              position={[positionX, index * -margin, 0]}
-            >
-              {item.name}
-            </Text>
-            <mesh ref={meshRef}>
-              <planeGeometry args={[1.2, 0.7, 10, 10]} />
-              <shaderMaterial
-                ref={materialRef}
-                vertexShader={vertex}
-                fragmentShader={fragment}
-                uniforms={{
-                  time: { value: 0 },
-                  matcaps: { value: images[0] },
-                  tate: { value: images[index % images.length] },
-                  direction: { value: 0 },
-                  uResolution: {
-                    value: new THREE.Vector2(size.width, size.height),
-                  },
-                }}
-              />
-            </mesh>
-            <Html ref={buttonRef} position={[scrollPosition, -0.1, 0]}>
-              <button
-                style={{
-                  position: "absolute",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  padding: "10px 20px",
-                  fontSize: "16px",
-                  backgroundColor: "#000",
-                  color: "#fff",
-                  border: "none",
-                  width: "max-content",
-                  borderRadius: "15px",
-                  cursor: "pointer",
-                  fontFamily: "noh",
-                }}
-                onClick={() => alert("Button clicked!")}
-              >
-                Learn more
-              </button>
-            </Html>
-          </React.Fragment>
-        ))
-      ) : (
-        <Text
-          ref={textRef}
-          fontSize={0.07}
-          font="/noh.ttf"
-          // position={[positionX, 0, 0]}
+      <Text ref={textRef} fontSize={ isMobile ? .035 : 0.07} font="/noh.ttf">
+        {texts[positionX % texts.length]}
+      </Text>
+
+      <mesh>
+        <planeGeometry args={[0, 0]} />
+        <meshBasicMaterial
+          color={"#000000"}
+          wireframe={true}
+          transparent={true}
+          opacity={0.1}
+          map={images[positionX % images.length]}
+        />
+      </mesh>
+
+      <Html ref={buttonRef} position={[scrollPosition, -.1, 0]}>
+        <button
+          style={{
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+            padding: "10px 20px",
+            fontSize: "16px",
+            backgroundColor: "#000",
+            color: "#fff",
+            border: "none",
+            width: "max-content",
+            borderRadius: "15px",
+            cursor: "pointer",
+            fontFamily: "noh",
+            zIndex: -1,
+          }}
+          onClick={() => alert("Button clicked!")}
         >
-          No courses available
-        </Text>
-      )}
+          Learn more
+        </button>
+      </Html>
+
+      <mesh ref={meshRef}>
+        <planeGeometry args={[isMobile? .5: 1.2, isMobile? .4: 0.7, 10, 10]} />
+        <shaderMaterial
+          ref={materialRef}
+          vertexShader={vertex}
+          fragmentShader={fragment}
+          uniforms={{
+            time: { value: 0 },
+            matcaps: { value: images[0] },
+            tate: { value: images[positionX % images.length] },
+            direction: { value: 0 },
+            uResolution: { value: new THREE.Vector2(size.width, size.height) },
+          }}
+        />
+      </mesh>
     </>
   );
 }
 
 function Scene() {
   const groupRef = useRef();
-  const margin = 1.4;
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  const margin = isMobile ? 1 : 1.4;
 
   return (
     <group ref={groupRef} position={[0, -0.1, 0]}>
@@ -196,11 +195,18 @@ export default function Slider() {
         Enrolled Classes
       </Text>
       <EffectComposer>
+        {/* <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} /> */}
         <Noise opacity={0.1} />
         <ambientLight intensity={0.5} />
         <pointLight position={[1, 1, 0]} intensity={0.5} />
         <pointLight position={[-1, 1, 0]} intensity={0.5} />
         <Floor />
+        {/* <Floor position={[1,0,0]} rotation={[0,-1.3,0]}/> */}
+        {/* <Floor position={[-1,0,0]} rotation={[0,1.3,0]}/> */}
+        {/* <LUT lut={useTexture('/path/to/lut.png')} /> */}
+        <ContactShadows opacity={1} scale={10} blur={1} far={10} resolution={256} color="#000000" />
+
+
       </EffectComposer>
     </>
   );
