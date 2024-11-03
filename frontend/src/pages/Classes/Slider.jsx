@@ -1,4 +1,3 @@
-// App.js
 import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
@@ -20,6 +19,7 @@ import {
 } from "@react-three/postprocessing";
 import { Text } from "@react-three/drei";
 import Floor from "./Reflector";
+import { useCourseStore } from "../../hooks/courseStore";
 
 function ScrollPlane({ positionX, margin }) {
   const meshRef = useRef();
@@ -46,7 +46,9 @@ function ScrollPlane({ positionX, margin }) {
     setCurrentScroll((prev) => lerp(prev, targetScroll, scrollSpeed));
 
     const scrollDirection = targetScroll > currentScroll ? 1 : -1;
-    materialRef.current.uniforms.direction.value = scrollDirection;
+    if (materialRef.current) {
+      materialRef.current.uniforms.direction.value = scrollDirection;
+    }
 
     const wholeHeight = 6 * margin;
 
@@ -55,34 +57,30 @@ function ScrollPlane({ positionX, margin }) {
         wholeHeight) -
       2 * margin;
 
-      setScrollPosition(positionXValue);
+    setScrollPosition(positionXValue);
 
+    if (meshRef.current) {
+      meshRef.current.position.x = positionXValue;
+    }
 
-    meshRef.current.position.x =positionXValue;
+    if (textRef.current) {
+      textRef.current.position.x = positionXValue;
+    }
 
-    textRef.current.position.x =positionXValue; 
-
-    // if (buttonRef.current) {
-    //   buttonRef.current.position.x = positionXValue;
-    //   buttonRef.current.position.y = -0.5; // Adjust as needed
-    //   buttonRef.current.position.z = 0;
-    // }
-
-    materialRef.current.uniforms.time.value += 0.01;
-    materialRef.current.uniforms.uResolution.value.set(size.width, size.height);
+    if (materialRef.current) {
+      materialRef.current.uniforms.time.value += 0.01;
+      materialRef.current.uniforms.uResolution.value.set(
+        size.width,
+        size.height
+      );
+    }
   });
 
   function lerp(start, end, t) {
     return start * (1 - t) + end * t;
   }
-  let texts = [
-    "CST205 OOPS",
-    "SUSTAINABLE ENGINEERING",
-    "DAE",
-    "LOGIC SYSTEM DESIGN",
-    "MAT 203- DMS",
-    "EST 120 BME",
-  ];
+
+  const { course } = useCourseStore();
 
   const images = useTexture([
     "1.jpeg",
@@ -93,60 +91,73 @@ function ScrollPlane({ positionX, margin }) {
     "6.jpeg",
   ]);
 
+  useEffect(() => {
+    console.log(course);
+  }, [course]);
+
   return (
     <>
-      <Text ref={textRef} fontSize={0.07} font="/noh.ttf">
-        {texts[positionX % texts.length]}
-      </Text>
-
-      <mesh>
-        <planeGeometry args={[0, 0]} />
-        <meshBasicMaterial
-          color={"#000000"}
-          wireframe={true}
-          transparent={true}
-          opacity={0.1}
-          map={images[positionX % images.length]}
-        />
-      </mesh>
-
-      <Html ref={buttonRef} position={[scrollPosition, -.1, 0]}>
-        <button
-          style={{
-            position: "absolute",
-            left: "50%",
-            transform: "translateX(-50%)",
-            padding: "10px 20px",
-            fontSize: "16px",
-            backgroundColor: "#000",
-            color: "#fff",
-            border: "none",
-            width: "max-content",
-            borderRadius: "15px",
-            cursor: "pointer",
-            fontFamily: "noh"
-          }}
-          onClick={() => alert("Button clicked!")}
+      {Array.isArray(course) && course.length > 0 ? (
+        course.map((item, index) => (
+          <React.Fragment key={index}>
+            <Text
+              ref={textRef}
+              fontSize={0.07}
+              font="/noh.ttf"
+              position={[0, index * -margin, 0]}
+            >
+              {item.name}
+            </Text>
+            <mesh ref={meshRef} position={[0, 0, 0]}>
+              <planeGeometry args={[1.2, 0.7, 10, 10]} />
+              <shaderMaterial
+                ref={materialRef}
+                vertexShader={vertex}
+                fragmentShader={fragment}
+                uniforms={{
+                  time: { value: 0 },
+                  matcaps: { value: images[0] },
+                  tate: { value: images[index % images.length] },
+                  direction: { value: 0 },
+                  uResolution: {
+                    value: new THREE.Vector2(size.width, size.height),
+                  },
+                }}
+              />
+            </mesh>
+            <Html ref={buttonRef} position={[scrollPosition, -0.1, 0]}>
+              <button
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  padding: "10px 20px",
+                  fontSize: "16px",
+                  backgroundColor: "#000",
+                  color: "#fff",
+                  border: "none",
+                  width: "max-content",
+                  borderRadius: "15px",
+                  cursor: "pointer",
+                  fontFamily: "noh",
+                }}
+                onClick={() => alert("Button clicked!")}
+              >
+                Learn more
+              </button>
+            </Html>
+          </React.Fragment>
+        ))
+      ) : (
+        <Text
+          ref={textRef}
+          fontSize={0.07}
+          font="/noh.ttf"
+          position={[positionX, 0, 0]}
         >
-          Learn more
-        </button>
-      </Html>
-
-      <mesh ref={meshRef}>
-        <planeGeometry args={[1.2, 0.7, 10, 10]} />
-        <shaderMaterial
-          ref={materialRef}
-          vertexShader={vertex}
-          fragmentShader={fragment}
-          uniforms={{
-            time: { value: 0 },
-            matcaps: { value: images[0] },
-            tate: { value: images[positionX % images.length] },
-            direction: { value: 0 },
-            uResolution: { value: new THREE.Vector2(size.width, size.height) },
-          }}
-        />
-      </mesh>
+          No courses available
+        </Text>
+      )}
     </>
   );
 }
@@ -185,18 +196,12 @@ export default function Slider() {
         Enrolled Classes
       </Text>
       <EffectComposer>
-        {/* <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} /> */}
         <Noise opacity={0.1} />
         <ambientLight intensity={0.5} />
         <pointLight position={[1, 1, 0]} intensity={0.5} />
         <pointLight position={[-1, 1, 0]} intensity={0.5} />
         <Floor />
-        {/* <Floor position={[1,0,0]} rotation={[0,-1.3,0]}/> */}
-        {/* <Floor position={[-1,0,0]} rotation={[0,1.3,0]}/> */}
       </EffectComposer>
-
-      {/* <EffectComposer>
-      </EffectComposer> */}
     </>
   );
 }

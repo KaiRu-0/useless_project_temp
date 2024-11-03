@@ -5,7 +5,7 @@ import Layout from "../layout/layout";
 const Home = () => {
   return (
     <>
-     <Layout  />
+      <Layout />
       <Classes />
     </>
   );
