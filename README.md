@@ -39,10 +39,14 @@ For Hardware:
 ### Implementation
 # Installation
 git clone https://github.com/yourusername/crackroom.git
+
 cd crackroom
+
 pip install -r requirements.txt
+
 # Run
 python main.py
+
 http://localhost:3000
 
 ### Project Documentation
