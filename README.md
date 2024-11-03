@@ -1,53 +1,57 @@
 <img width="1280" alt="readme-banner" src="https://github.com/user-attachments/assets/35332e92-44cb-425b-9dff-27bcf1023c6c">
 
-# [Project Name] 🎯
+# CrackRoom 🗿
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: Potato
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: Alan Fransis Santhosh - MITS
+- Member 2: Ameen Abdullah - MITS
+- Member 3: Sidharth Ravi - MITS
 
 ### Project Description
-[2-3 lines about what your project does]
+Crackroom is an automated Google Classroom assistant that handles your assignments using AI. It connects to your Google Classroom account, reads assignments, and generates high-quality responses using Gemini 1.5.
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+Poor college students are drowning in mundane assignments that don't require creativity or critical thinking. Writing a paragraph about cosine similarity? Really? We need these chores out of sight and out of mind!
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+Enter Crackroom - your AI-powered homework buddy that turns those boring assignments into a thing of the past! It reads your assignments, understands them (probably better than you), and crafts responses that would make your professor proud (or suspicious). Now you can spend that saved hour doing equally unproductive things, but stress-free!
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+- Python
+- Google Cloud Platform APIs
+- Google Classroom API
+- Gemini 1.5 API
+- Frontend Framework (In development)
+- PDF Processing Libraries
+- Cloud Service Integration
 
 For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
+- Alans Big Brain
+
 
 ### Implementation
 For Software:
 # Installation
-[commands]
-
+git clone https://github.com/yourusername/crackroom.git
+cd crackroom
+pip install -r requirements.txt
 # Run
-[commands]
+python main.py
+http://localhost:3000
 
 ### Project Documentation
 For Software:
 
-# Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+# Screenshots 
+![image](https://github.com/user-attachments/assets/4030f70c-7a79-4189-bb99-871d6cb20a65)
+Creating Frontend and integration of APIs
 
 ![Screenshot2](Add screenshot 2 here with proper name)
 *Add caption explaining what this shows*
@@ -58,25 +62,6 @@ For Software:
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
 *Add caption explaining your workflow*
-
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
 
 ### Project Demo
 # Video
