@@ -39,8 +39,18 @@ function ScrollPlane({ positionX, margin }) {
     const handleScroll = (e) => {
       setTargetScroll((prev) => prev + e.deltaY);
     };
+
+    const handleTouchMove = (e) => {
+      setTargetScroll((prev) => prev + e.touches[0].clientY);
+    };
+
     window.addEventListener("wheel", handleScroll);
-    return () => window.removeEventListener("wheel", handleScroll);
+    window.addEventListener("touchmove", handleTouchMove);
+
+    return () => {
+      window.removeEventListener("wheel", handleScroll);
+      window.removeEventListener("touchmove", handleTouchMove);
+    };
   }, []);
 
   useFrame((rootState) => {
@@ -49,6 +59,7 @@ function ScrollPlane({ positionX, margin }) {
     const scrollDirection = targetScroll > currentScroll ? 1 : -1;
     materialRef.current.uniforms.direction.value = scrollDirection;
 
+    
     const wholeHeight = 6 * margin;
 
     const positionXValue =
@@ -56,18 +67,10 @@ function ScrollPlane({ positionX, margin }) {
         wholeHeight) -
       2 * margin;
 
-      setScrollPosition(positionXValue);
+    setScrollPosition(positionXValue);
 
-
-    meshRef.current.position.x =positionXValue;
-
-    textRef.current.position.x =positionXValue; 
-
-    // if (buttonRef.current) {
-    //   buttonRef.current.position.x = positionXValue;
-    //   buttonRef.current.position.y = -0.5; // Adjust as needed
-    //   buttonRef.current.position.z = 0;
-    // }
+    meshRef.current.position.x = positionXValue;
+    textRef.current.position.x = positionXValue;
 
     materialRef.current.uniforms.time.value += 0.01;
     materialRef.current.uniforms.uResolution.value.set(size.width, size.height);
@@ -76,6 +79,7 @@ function ScrollPlane({ positionX, margin }) {
   function lerp(start, end, t) {
     return start * (1 - t) + end * t;
   }
+
   let texts = [
     "CST205 OOPS",
     "SUSTAINABLE ENGINEERING",
@@ -94,9 +98,11 @@ function ScrollPlane({ positionX, margin }) {
     "6.jpeg",
   ]);
 
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
   return (
     <>
-      <Text ref={textRef} fontSize={0.07} font="/noh.ttf">
+      <Text ref={textRef} fontSize={ isMobile ? .035 : 0.07} font="/noh.ttf">
         {texts[positionX % texts.length]}
       </Text>
 
@@ -126,7 +132,7 @@ function ScrollPlane({ positionX, margin }) {
             borderRadius: "15px",
             cursor: "pointer",
             fontFamily: "noh",
-            zIndex:-1,
+            zIndex: -1,
           }}
           onClick={() => alert("Button clicked!")}
         >
@@ -135,7 +141,7 @@ function ScrollPlane({ positionX, margin }) {
       </Html>
 
       <mesh ref={meshRef}>
-        <planeGeometry args={[1.2, 0.7, 10, 10]} />
+        <planeGeometry args={[isMobile? .5: 1.2, isMobile? .4: 0.7, 10, 10]} />
         <shaderMaterial
           ref={materialRef}
           vertexShader={vertex}
@@ -155,7 +161,9 @@ function ScrollPlane({ positionX, margin }) {
 
 function Scene() {
   const groupRef = useRef();
-  const margin = 1.4;
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  const margin = isMobile ? 1 : 1.4;
 
   return (
     <group ref={groupRef} position={[0, -0.1, 0]}>

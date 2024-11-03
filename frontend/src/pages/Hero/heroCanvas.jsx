@@ -41,6 +41,9 @@ function Scene(props) {
   const [accent, click] = useReducer((state) => ++state % accents.length, 0);
   const connectors = useMemo(() => shuffle(accent), [accent]);
 
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+
   return (
     <Canvas
       onClick={click}
@@ -50,26 +53,27 @@ function Scene(props) {
       camera={{ position: [0, 0, 15], fov: 17.5, near: 1, far: 20 }}
       {...props}
     >
-      <ResponsiveText text="Your Smart Classroom Assistant" scaleFactor={0.4} />
+      <ResponsiveText text="Your Smart Classroom Assistant" scaleFactor={isMobile ? .9 :0.4}  maxWidth={isMobile?2: 5}/>
       <ResponsiveText
         text="Effortlessly manage assignments, track deadlines, and get instant
 answers with your AI-powered classroom assistant. Stay organized and
 ahead, all from one interactive platform"
-        scaleFactor={0.1}
-        maxWidth={4}
+        scaleFactor={isMobile ? .3 :0.1}
+        maxWidth={isMobile? 3 :4}
         position={[0, -0.6, 0]}
       />
-      <Html position={[-1, -1., 0]}>
+      <Html position={[ isMobile ?-0.5 :-1, -1., 0]}>
         <button
           style={{
-            padding: "1vw 2vw",
+            padding: isMobile ?"1vh 2vh" : "1vw 2vw",
             fontSize: "16px",
             borderRadius: "5px",
             border: "none", 
             cursor: "pointer",
             position: "absolute",
-            left: "50%",
+            // left: "50%",
             width: "max-content",
+            fontFamily: "noh",
           }}
           onClick={() => alert("Button clicked!")}
         >
