@@ -5,6 +5,7 @@ import Home from "./pages/home";
 import NotFound from "./pages/notFoud";
 import Assignment from "./pages/Assignment/Assignment";
 import Layout2 from "./layout/layout2";
+import Hero from "./pages/Hero/Hero";
 
 function App() {
   const router = createBrowserRouter([
@@ -29,7 +30,10 @@ function App() {
     {
       path: "/assignment",
       element: <Assignment />,
-      
+    },
+    {
+      path: "/home",
+      element: <Hero />,
     },
   ]);
 

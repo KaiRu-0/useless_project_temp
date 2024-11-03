@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
+  ContactShadows,
   Html,
   PerspectiveCamera,
   shaderMaterial,
@@ -38,8 +39,18 @@ function ScrollPlane({ positionX, margin }) {
     const handleScroll = (e) => {
       setTargetScroll((prev) => prev + e.deltaY);
     };
+
+    const handleTouchMove = (e) => {
+      setTargetScroll((prev) => prev + e.touches[0].clientY);
+    };
+
     window.addEventListener("wheel", handleScroll);
-    return () => window.removeEventListener("wheel", handleScroll);
+    window.addEventListener("touchmove", handleTouchMove);
+
+    return () => {
+      window.removeEventListener("wheel", handleScroll);
+      window.removeEventListener("touchmove", handleTouchMove);
+    };
   }, []);
 
   useFrame((rootState) => {
@@ -50,6 +61,7 @@ function ScrollPlane({ positionX, margin }) {
       materialRef.current.uniforms.direction.value = scrollDirection;
     }
 
+    
     const wholeHeight = 6 * margin;
 
     const positionXValue =
@@ -164,7 +176,9 @@ function ScrollPlane({ positionX, margin }) {
 
 function Scene() {
   const groupRef = useRef();
-  const margin = 1.4;
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  const margin = isMobile ? 1 : 1.4;
 
   return (
     <group ref={groupRef} position={[0, -0.1, 0]}>
