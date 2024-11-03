@@ -41,7 +41,7 @@ function ScrollPlane({ positionX, margin }) {
     };
 
     const handleTouchMove = (e) => {
-      setTargetScroll((prev) => prev + e.touches[0].clientY);
+      setTargetScroll((prev) => prev + e.touches[0].clientY * 0.05);
     };
 
     window.addEventListener("wheel", handleScroll);
@@ -56,10 +56,10 @@ function ScrollPlane({ positionX, margin }) {
   useFrame((rootState) => {
     setCurrentScroll((prev) => lerp(prev, targetScroll, scrollSpeed));
 
+
     const scrollDirection = targetScroll > currentScroll ? 1 : -1;
     materialRef.current.uniforms.direction.value = scrollDirection;
 
-    
     const wholeHeight = 6 * margin;
 
     const positionXValue =
@@ -152,6 +152,8 @@ function ScrollPlane({ positionX, margin }) {
             tate: { value: images[positionX % images.length] },
             direction: { value: 0 },
             uResolution: { value: new THREE.Vector2(size.width, size.height) },
+            uisMobile: { value: isMobile },
+            velocity : {value: 0}
           }}
         />
       </mesh>
@@ -163,7 +165,7 @@ function Scene() {
   const groupRef = useRef();
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-  const margin = isMobile ? 1 : 1.4;
+  const margin = isMobile ? .6 : 1.4;
 
   return (
     <group ref={groupRef} position={[0, -0.1, 0]}>
@@ -181,22 +183,23 @@ export default function Slider() {
 
   let widthScale = size.width / 1000;
   let heightScale = size.height / 1000;
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
 
   return (
     <>
       <Scene />
       <Text
         color={"#fff"}
-        fontSize={0.8 * textScale}
-        maxWidth={1 * widthScale}
-        position={[0, 0.4, 0]}
+        fontSize={isMobile ? textScale * 1.5 : 0.8 * textScale}
+        maxWidth={1.2 * widthScale}
+        position={[0,  isMobile ? .2 : 0.4, 0]}
         font="/noh.ttf"
       >
         Enrolled Classes
       </Text>
       <EffectComposer>
-        {/* <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} /> */}
-        <Noise opacity={0.1} />
+        <Noise opacity={0.3} />
         <ambientLight intensity={0.5} />
         <pointLight position={[1, 1, 0]} intensity={0.5} />
         <pointLight position={[-1, 1, 0]} intensity={0.5} />
