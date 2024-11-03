@@ -30,14 +30,27 @@ const Nav2 = () => {
         <nav>
           <ul>
             <h2>Navigation</h2>
-            <li><a href="">Assignment</a></li>
-            <li><a href="">Assignment</a></li>
-            <li><a href="">Assignment</a></li>
-            <li><a href="">Assignment</a></li>
-            <li><a href="">Assignment</a></li>
-            <li><a href="">Assignment</a></li>
-            <li><a href="">Assignment</a></li>
-
+            <li>
+              <a href="">Assignment</a>
+            </li>
+            <li>
+              <a href="">Assignment</a>
+            </li>
+            <li>
+              <a href="">Assignment</a>
+            </li>
+            <li>
+              <a href="">Assignment</a>
+            </li>
+            <li>
+              <a href="">Assignment</a>
+            </li>
+            <li>
+              <a href="">Assignment</a>
+            </li>
+            <li>
+              <a href="">Assignment</a>
+            </li>
           </ul>
         </nav>
       </div>

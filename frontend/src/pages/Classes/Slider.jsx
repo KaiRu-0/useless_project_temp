@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
-  ContactShadows,
   Html,
   PerspectiveCamera,
   shaderMaterial,
@@ -39,18 +38,8 @@ function ScrollPlane({ positionX, margin }) {
     const handleScroll = (e) => {
       setTargetScroll((prev) => prev + e.deltaY);
     };
-
-    const handleTouchMove = (e) => {
-      setTargetScroll((prev) => prev + e.touches[0].clientY);
-    };
-
     window.addEventListener("wheel", handleScroll);
-    window.addEventListener("touchmove", handleTouchMove);
-
-    return () => {
-      window.removeEventListener("wheel", handleScroll);
-      window.removeEventListener("touchmove", handleTouchMove);
-    };
+    return () => window.removeEventListener("wheel", handleScroll);
   }, []);
 
   useFrame((rootState) => {
@@ -61,7 +50,6 @@ function ScrollPlane({ positionX, margin }) {
       materialRef.current.uniforms.direction.value = scrollDirection;
     }
 
-    
     const wholeHeight = 6 * margin;
 
     const positionXValue =
@@ -116,11 +104,11 @@ function ScrollPlane({ positionX, margin }) {
               ref={textRef}
               fontSize={0.07}
               font="/noh.ttf"
-              position={[0, index * -margin, 0]}
+              position={[positionX, index * -margin, 0]}
             >
               {item.name}
             </Text>
-            <mesh ref={meshRef} position={[0, 0, 0]}>
+            <mesh ref={meshRef}>
               <planeGeometry args={[1.2, 0.7, 10, 10]} />
               <shaderMaterial
                 ref={materialRef}
@@ -165,7 +153,7 @@ function ScrollPlane({ positionX, margin }) {
           ref={textRef}
           fontSize={0.07}
           font="/noh.ttf"
-          position={[positionX, 0, 0]}
+          // position={[positionX, 0, 0]}
         >
           No courses available
         </Text>
@@ -176,9 +164,7 @@ function ScrollPlane({ positionX, margin }) {
 
 function Scene() {
   const groupRef = useRef();
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-  const margin = isMobile ? 1 : 1.4;
+  const margin = 1.4;
 
   return (
     <group ref={groupRef} position={[0, -0.1, 0]}>

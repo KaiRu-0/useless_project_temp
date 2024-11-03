@@ -1,9 +1,20 @@
 import React, { useEffect } from "react";
 import { get_courses } from "../../utils/api/api";
 import { useCourseStore } from "../hooks/courseStore";
+import { useSelectedCourseStore } from "../hooks/selectdCourseStore";
+import { useNavigate } from "react-router-dom";
 
 const Nav = () => {
   const { course, setCourse } = useCourseStore();
+  const { setCourse_id } = useSelectedCourseStore();
+
+  const navigate = useNavigate();
+
+  const handleClick = (index) => {
+    console.log("Clicked on course:", course[index]); // Log the clicked course
+    setCourse_id(course[index].id);
+    navigate(`/assignment/`); // Navigate to the course page
+  };
 
   useEffect(() => {
     if (course.length === 0) {
@@ -52,8 +63,8 @@ const Nav = () => {
           <ul>
             <h2>Navigation</h2>
             {Array.isArray(course) && course.length > 0 ? (
-              course.map((item) => (
-                <li key={item.id}>
+              course.map((item, i) => (
+                <li onClick={() => handleClick(i)} key={item.id}>
                   <a href="#">{item.name}</a>
                 </li>
               ))
