@@ -1,7 +1,14 @@
 import React from "react";
+import Classes from "./Classes/Classes";
+import Layout from "../layout/layout";
 
 const Home = () => {
-  return <div>Home</div>;
+  return (
+    <>
+     <Layout  />
+      <Classes />
+    </>
+  );
 };
 
 export default Home;

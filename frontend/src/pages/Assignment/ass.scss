@@ -1,0 +1,21 @@
+
+.container-ass {
+    width: 80vw;
+    height: 100vh;
+    color: white;
+    margin-left: 20vw;
+
+
+    .content-wrapper {
+        width: 90%;
+        margin-inline:auto;
+        padding: 5vw 0;
+    }
+    .question {
+        width: 50%;
+        h3 {
+            font-weight: 500;
+            padding: 1vw 0;
+        }
+    }
+}

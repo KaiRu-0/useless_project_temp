@@ -3,6 +3,8 @@ import "./App.css";
 import Layout from "./layout/layout";
 import Home from "./pages/home";
 import NotFound from "./pages/notFoud";
+import Assignment from "./pages/Assignment/Assignment";
+import Layout2 from "./layout/layout2";
 
 function App() {
   const router = createBrowserRouter([
@@ -23,6 +25,11 @@ function App() {
           element: <Home />,
         },
       ],
+    },
+    {
+      path: "/assignment",
+      element: <Assignment />,
+      
     },
   ]);
 
