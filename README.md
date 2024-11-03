@@ -37,7 +37,6 @@ For Hardware:
 
 
 ### Implementation
-For Software:
 # Installation
 git clone https://github.com/yourusername/crackroom.git
 cd crackroom
