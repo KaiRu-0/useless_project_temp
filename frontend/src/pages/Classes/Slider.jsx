@@ -2,6 +2,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
+  ContactShadows,
   Html,
   PerspectiveCamera,
   shaderMaterial,
@@ -124,7 +125,8 @@ function ScrollPlane({ positionX, margin }) {
             width: "max-content",
             borderRadius: "15px",
             cursor: "pointer",
-            fontFamily: "noh"
+            fontFamily: "noh",
+            zIndex:-1,
           }}
           onClick={() => alert("Button clicked!")}
         >
@@ -193,10 +195,11 @@ export default function Slider() {
         <Floor />
         {/* <Floor position={[1,0,0]} rotation={[0,-1.3,0]}/> */}
         {/* <Floor position={[-1,0,0]} rotation={[0,1.3,0]}/> */}
-      </EffectComposer>
+        {/* <LUT lut={useTexture('/path/to/lut.png')} /> */}
+        <ContactShadows opacity={1} scale={10} blur={1} far={10} resolution={256} color="#000000" />
 
-      {/* <EffectComposer>
-      </EffectComposer> */}
+
+      </EffectComposer>
     </>
   );
 }
