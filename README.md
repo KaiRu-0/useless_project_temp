@@ -1,4 +1,4 @@
-<img width="1280" alt="readme-banner" src="https://github.com/user-attachments/assets/35332e92-44cb-425b-9dff-27bcf1023c6c">
+![image](https://github.com/user-attachments/assets/d441e912-04ca-4eea-8b7f-3d55d6e3b1d4)<img width="1280" alt="readme-banner" src="https://github.com/user-attachments/assets/35332e92-44cb-425b-9dff-27bcf1023c6c">
 
 # CrackRoom 🗿
 
@@ -53,11 +53,11 @@ For Software:
 ![image](https://github.com/user-attachments/assets/4030f70c-7a79-4189-bb99-871d6cb20a65)
 Creating Frontend and integration of APIs
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![image](https://github.com/user-attachments/assets/55141f33-ee93-4ae1-b44d-2eafa427749b)
+Working on slider and other components
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![image](https://github.com/user-attachments/assets/91e70d37-10e4-41d4-ac69-ae97dbceaba4)
+Final touches on the landing page
 
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
@@ -71,12 +71,6 @@ Creating Frontend and integration of APIs
 # Additional Demos
 [Add any extra demo materials/links]
 
-## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
-
----
 Made with ❤️ at TinkerHub Useless Projects 
 
 ![Static Badge](https://img.shields.io/badge/TinkerHub-24?color=%23000000&link=https%3A%2F%2Fwww.tinkerhub.org%2F)
