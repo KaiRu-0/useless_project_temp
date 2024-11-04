@@ -13,6 +13,6 @@ html , body{
     width: 100%;
     background-color: #070410;
     /* background-color: #645c7b; */
-
+overflow: hidden;
     font-family: noh;
 }

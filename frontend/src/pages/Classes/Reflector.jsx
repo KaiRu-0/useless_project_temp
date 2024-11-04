@@ -2,22 +2,23 @@ import { Circle, MeshReflectorMaterial } from '@react-three/drei'
 
 export default function Floor() {
   return (
-    <Circle args={[1, 32]} receiveShadow scale={.6} rotation-x={-1.7} position-y={-.5  }>
+    <mesh receiveShadow rotation-x={-Math.PI / 2} position-y={-0.5}>
+      <planeGeometry args={[10, 10]} />
       <MeshReflectorMaterial
         color={'#2f2e3b'}
-        envMapIntensity={0}
+        envMapIntensity={1}
         blur={[512, 512]}
         mixBlur={1}
         mixStrength={5}  // Increased mixStrength for more reflection
         mixContrast={1}
-        resolution={1024}
+        resolution={512}
         mirror={1}
         depthScale={1}
-        minDepthThreshold={0.8}
+        minDepthThreshold={1.8}
         maxDepthThreshold={1}
-        depthToBlurRatioBias={0.45}
-        roughness={1}  // Reduced roughness for more reflection
+        depthToBlurRatioBias={1.45}
+        roughness={0.5}  // Reduced roughness for more reflection
       />
-    </Circle>
+    </mesh>
   )
 }

@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { get_courses } from "../../utils/api/api";
 import { useCourseStore } from "../hooks/courseStore";
 import { useSelectedCourseStore } from "../hooks/selectdCourseStore";
 import { useNavigate } from "react-router-dom";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 const Nav = () => {
+  gsap.registerPlugin(useGSAP);
+
   const { course, setCourse } = useCourseStore();
   const { setCourse_id } = useSelectedCourseStore();
 
@@ -33,33 +37,34 @@ const Nav = () => {
     }
   }, [course, setCourse]);
 
+  const container = useRef(null);
+
+  const timeline = useRef(gsap.timeline({ paused: true }));
+
+  useGSAP(
+    () => {
+      timeline.current.to(".side-bar", { opacity: 0 });
+    },
+    { scope: container }
+  );
+
+  const handleToggle = () => {
+    if (timeline.current.paused()) {
+      timeline.current.play();
+    } else {
+      timeline.current.reverse();
+    }
+  };
+
   return (
     <div className="side-bar">
-      <label className="switch">
-        <input type="checkbox" />
-        <span className="wrapper">
-          <span className="row">
-            <span className="dot"></span>
-            <span className="dot"></span>
-          </span>
-          <span className="row row-bottom">
-            <span className="dot"></span>
-            <span className="dot"></span>
-          </span>
-          <span className="row-vertical">
-            <span className="dot"></span>
-            <span className="dot middle-dot"></span>
-            <span className="dot"></span>
-          </span>
-          <span className="row-horizontal">
-            <span className="dot"></span>
-            <span className="dot middle-dot-horizontal"></span>
-            <span className="dot"></span>
-          </span>
-        </span>
-      </label>
-      <div className="content">
-        <nav>
+      <div ref={container} className="hamburger" onClick={handleToggle}>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div className="content2">
+        <nav className="nav1">
           <ul>
             <h2>Navigation</h2>
             {Array.isArray(course) && course.length > 0 ? (
@@ -69,7 +74,9 @@ const Nav = () => {
                 </li>
               ))
             ) : (
-              <li>No courses available</li>
+              <li>
+                <a href="">No courses available</a>
+              </li>
             )}
           </ul>
         </nav>
