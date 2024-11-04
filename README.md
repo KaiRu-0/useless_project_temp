@@ -63,16 +63,12 @@ Working on slider and other components
 Final touches on the landing page
 
 # Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
+![image](https://github.com/user-attachments/assets/8a098617-4f8f-4df9-bed4-06f33d1ac964)
+The diagram explains how the different parts of the program are connected and the lines of communication between them
 
 ### Project Demo
-# Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
-
 # Additional Demos
-[Add any extra demo materials/links]
+Just run the program and see the results :D
 
 Made with ❤️ at TinkerHub Useless Projects 
 
