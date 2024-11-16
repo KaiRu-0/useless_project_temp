@@ -68,7 +68,7 @@ npm run dev
 ```
 
 # Run in browser
-http://localhost:5173
+http://localhost:5173/home
 
 ### Project Documentation
 For Software:
