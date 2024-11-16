@@ -24,11 +24,15 @@ Enter Crackroom - your AI-powered homework buddy that turns those boring assignm
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- Python
-- Google Cloud Platform APIs
-- Google Classroom API
-- Gemini 1.5 API
-- Frontend Framework (In development)
+- Python 💙
+- js 💛
+- React js ⚛️
+- Langchain 🦜
+- FastAPI ⚡
+- three js 🔥🔥🔥🔥🔥
+- Google Cloud Platform APIs ☁️
+- Google Classroom API 📚
+- Gemini 1.5 API 🤖
 - PDF Processing Libraries
 - Cloud Service Integration
 
@@ -38,16 +42,33 @@ For Hardware:
 
 ### Implementation
 # Installation
-git clone https://github.com/yourusername/crackroom.git
+git clone https://github.com/alanfrancis442/useless_project_temp.git
 
+```shell
 cd crackroom
+cd backend
 
 pip install -r requirements.txt
+```
+
+```shell
+cd ..
+cd frontend
+
+npm install
+```
 
 # Run
+```shell
+cd backend
 python main.py
+cd ..
+cd frontend
+npm run dev
+```
 
-http://localhost:3000
+# Run in browser
+http://localhost:5173
 
 ### Project Documentation
 For Software:
@@ -64,11 +85,18 @@ Final touches on the landing page
 
 # Diagrams
 ![image](https://github.com/user-attachments/assets/8a098617-4f8f-4df9-bed4-06f33d1ac964)
+
 The diagram explains how the different parts of the program are connected and the lines of communication between them
 
 ### Project Demo
 # Additional Demos
 Just run the program and see the results :D
+
+#### Important Note 📝
+> 🚨 **Attention Future CrackRoom Enthusiasts!**  
+> To run CrackRoom properly, you'll need an actual Google Cloud API key for Google Classroom, which you can obtain from the *legendary* [Google Cloud Console](https://console.cloud.google.com/). Our backend cannot be hosted yet because we lack the financial resources (any angel investors out there?), and the user tokens have a habit of expiring. So, every now and then, you’ll have to log in again.  
+> **TL;DR:** To get the *full, exhilarating* CrackRoom experience, please run it locally with your own Google Cloud and Gemini API keys. Thank you for your patience :) 😅
+
 
 Made with ❤️ at TinkerHub Useless Projects 
 
