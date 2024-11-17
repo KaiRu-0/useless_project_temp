@@ -89,6 +89,12 @@ Final touches on the landing page
 The diagram explains how the different parts of the program are connected and the lines of communication between them
 
 ### Project Demo
+
+
+https://github.com/user-attachments/assets/6c642635-3de5-4aca-8c2f-67d3671a8c5b
+
+
+
 # Additional Demos
 Just run the program and see the results :D
 
